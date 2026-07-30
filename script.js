@@ -1,5 +1,6 @@
 console.log("App is working")
 
+//  To sawp between Your library tab and song tab at left side (left section)
 const libraryTab = document.getElementById("libraryTab");
 const songsTab = document.getElementById("songsTab");
 
@@ -24,6 +25,7 @@ songsTab.onclick = () => {
     songsContent.style.display = "block";
 };
 
+// feacting musics from folders
 async function getSongs() {
 
     let a = await fetch("http://127.0.0.1:3000/songs/");
@@ -43,6 +45,7 @@ async function getSongs() {
     };
     return songs;
 };
+
 
 async function main() {
 

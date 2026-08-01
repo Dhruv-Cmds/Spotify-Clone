@@ -25,6 +25,20 @@ songsTab.onclick = () => {
     songsContent.style.display = "block";
 };
 
+function secondsToMinutesSeconds(seconds) {
+    if (isNaN(seconds) || seconds < 0) {
+        return "00:00";
+    }
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+}
+
 // feacting musics from folders
 async function getSongs() {
 
@@ -46,16 +60,43 @@ async function getSongs() {
     return songs;
 };
 
+const currentSong = new Audio;
+
+/* Variable whose value is function initialy this function waiting for track which will come after 
+main function execute then this function will execute and play song */
+
+const playMusic = (track, pause = false) => {
+
+    const songURL = track.startsWith("http")
+        ? track
+        : `http://127.0.0.1:3000/songs/${encodeURIComponent(track)}`;
+
+
+    const songName = decodeURIComponent(
+        new URL(songURL).pathname.split("/").pop()
+    );
+
+    currentSong.src = songURL;
+
+    if (!pause) {
+        currentSong.play();
+        play.src = "svgs/pause.svg";
+    };
+    
+    document.querySelector(".song-info").innerHTML = songName;
+    document.querySelector(".song-time").innerHTML = "00:00 / 00:00";
+}
 
 async function main() {
 
     // Get the list of all the songs
     let songs = await getSongs();
-    console.log(songs);
 
-    let songUL = document.querySelector(".songs-list").getElementsByTagName("ul")[0]
+    playMusic(songs[0], true);
+    // SHow all the songs in the playlist
+    let songUL = document.querySelector(".songs-list").getElementsByTagName("ul")[0];
 
-    songUL.innerHTML = ""
+    songUL.innerHTML = "";
 
     for (const song of songs) {
         songUL.innerHTML = songUL.innerHTML + `<li><img width="34" src="svgs/music.svg" alt="">
@@ -65,20 +106,66 @@ async function main() {
                             </div>
                             <div class="playnow">
                                 <span>Play Now</span>
-                                <img  style="width: 30px; height: 50px;" class="invert" src="svgs/play.svg" alt="">
+                                <img class="invert" src="svgs/play.svg" alt="">
                             </div> </li>`;
-    }
+    };
 
+    // Attach an event listener to each song
 
-    // play the first song
-    var audio = new Audio(songs[5]);
-    audio.play().catch(() => {
-        console.log("Playback will start after a user interaction.");
+    Array.from(document.querySelector(".songs-list").getElementsByTagName("li")).forEach(e => {
+
+        e.addEventListener("click", element => {
+            playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
+        });
+
     });
 
-    audio.addEventListener("loadedmetadata", () => {
-        let duration = audio.duration;
-        console.log(duration);
+    // Attack an event listenr to paly, next previois
+
+    play.addEventListener("click", () => {
+
+        if (currentSong.paused) {
+            currentSong.play();
+            play.src = "svgs/pause.svg"
+        }
+
+        else {
+            currentSong.pause();
+            play.src = "svgs/play.svg"
+        }
+
+    });
+
+    // Listen for timeupdate event
+
+    currentSong.addEventListener("timeupdate", () => {
+        document.querySelector(".song-time").innerHTML = `
+        ${secondsToMinutesSeconds(currentSong.currentTime)}/
+        ${secondsToMinutesSeconds(currentSong.duration)}`
+        document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
+    });
+
+    //  Add an event listner to seekbar
+
+    document.querySelector(".seekbar").addEventListener("click", e => {
+        let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
+        document.querySelector(".circle").style.left = percent + "%";
+        currentSong.currentTime = ((currentSong.duration) * percent) / 100;
+    });
+
+    // Add an event listner for hamburger
+
+    let isLeftPanelOpen = false;
+    const hamburger = document.querySelector(".hamburger");
+    const hamburgerIcon = hamburger.querySelector("img");
+    const leftPanel = document.querySelector(".left");
+
+    hamburger.addEventListener("click", () => {
+        isLeftPanelOpen = !isLeftPanelOpen;
+        leftPanel.style.left = isLeftPanelOpen ? "0" : "-110%";
+        hamburgerIcon.src = isLeftPanelOpen
+            ? "svgs/hamburger-close.svg"
+            : "svgs/hamburger-open.svg";
     });
 };
 

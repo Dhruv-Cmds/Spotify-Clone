@@ -9,12 +9,15 @@ body {
 }
 
 header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     padding: 4px;
     margin: 5px;
+    background-color: rgb(0, 0, 0);
 }
 
 nav {
-    position: sticky;
     color: white;
     justify-content: space-between;
 
@@ -74,12 +77,12 @@ nav img:first-child {
 }
 
 
-.gallery{
+.gallery {
     margin-left: 15px;
     transition: 300ms ease;
 }
 
-.gallery:hover{
+.gallery:hover {
     transform: scale(1.1);
 }
 
@@ -169,7 +172,6 @@ nav button:nth-child(2):hover {
 
     width: 25vw;
     padding: 20px;
-    height: 644px;
 
     border: #121212;
     background-color: #121212;
@@ -234,12 +236,11 @@ nav button:nth-child(2):hover {
     list-style-type: decimal;
     display: flex;
     justify-content: space-between;
-    gap: 12px;
     cursor: pointer;
 
     border: 1px solid rgba(146, 143, 143, 0.491);
     margin: 12px 0;
-    padding: 13px;
+    padding: 4px;
     border-radius: 5px;
 
     background-color: rgb(100, 98, 98);
@@ -264,7 +265,14 @@ nav button:nth-child(2):hover {
 
 .playnow {
     display: flex;
+    align-items: center;
 
+}
+
+
+.playnow img {
+    width: 34px;
+    height: 30px;
 }
 
 .playnow span {
@@ -273,12 +281,10 @@ nav button:nth-child(2):hover {
     padding: 12px;
 }
 
-
 #libraryTab,
 #songsTab {
     cursor: pointer;
 }
-
 
 
 .cards {
@@ -465,11 +471,11 @@ nav button:nth-child(2):hover {
     bottom: 0;
     background-color: rgb(65, 65, 65);
     width: 90%;
+    height: 53px;
     padding: 10px;
 
     border-radius: 20px;
     margin-bottom: 10px;
-
 }
 
 .song-buttons {
@@ -478,8 +484,95 @@ nav button:nth-child(2):hover {
 
 .song-buttons img {
     transition: 150ms ease-in;
+    cursor: pointer;
 }
 
 .song-buttons img:hover {
     transform: scale(1.1);
+}
+
+
+.seekbar {
+    height: 3px;
+    width: 90%;
+    background-color: white;
+    border-radius: 10px;
+    position: absolute;
+    top: 45px;
+    bottom: 0;
+
+}
+
+.circle {
+    width: 13px;
+    height: 13px;
+    border-radius: 13px;
+    background-color: white;
+    position: relative;
+    bottom: 7px;
+    left: 0;
+}
+
+.song-info {
+    flex: 1;
+    min-width: 0;
+    padding-left: 85px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.song-time {
+    flex: 1;
+    min-width: 0;
+    padding-right: 85px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.hamburger {
+    display: none;
+}
+
+@media (max-width: 1400px) {
+
+
+    .left {
+        width: 25vw;
+        height: 643px;
+        left: -110%;
+        position: absolute;
+        z-index: 1;
+        transition: 300ms all ease;
+    }
+
+    .right {
+        width: 100vw;
+    }
+
+    .playbar {
+        width: 95%;
+    }
+
+    nav ul {
+        margin-left: 20px;
+    }
+    
+    .hamburger {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #1f1f1f;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #1f1f1f;
+        transition: 300ms ease;
+    }
+
+    .hamburger:hover {
+        transform: scale(1.1);
+        background-color: #323232;
+        box-shadow: inset 0 0 1px 0;
+    }
 }

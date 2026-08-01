@@ -10,9 +10,14 @@
 </head>
 
 <body>
+
     <header>
 
         <nav class="flex items-center">
+
+            <div class="hamburger">
+                <img src="svgs/hamburger-open.svg" alt="">
+            </div>
 
             <img src="svgs/logo.svg" alt="">
 
@@ -33,7 +38,7 @@
                     </span>
 
                 </span>
-                
+
             </div>
 
             <ul class="flex">
@@ -130,23 +135,19 @@
                     <h2>Happy Hits!</h2>
                     <p>Hits to boost your mood and fit you with happiness!</p>
                 </div>
-
-
-
-
-
-
-
-
-
             </div>
 
-            <div class="playbar">
-                <div class="song-info"></div>
-                <div class="song-buttons flex justify-content items-center">
-                    <img src="svgs/previous.svg" alt="">
-                    <img src="svgs/play.svg" alt="">
-                    <img src="svgs/next.svg" alt="">
+            <div class="playbar flex justify-content items-center">
+                <div class="seekbar">
+                    <div class="circle">
+
+                    </div>
+                </div>
+                <div class="song-info flex"></div>
+                <div class="song-buttons ">
+                    <img id="previous" src="svgs/previous.svg" alt="">
+                    <img id="play" src="svgs/play.svg" alt="">
+                    <img id="next" src="svgs/next.svg" alt="">
                 </div>
                 <div class="song-time"></div>
             </div>

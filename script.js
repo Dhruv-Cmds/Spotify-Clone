@@ -162,10 +162,10 @@ async function main() {
 
     hamburger.addEventListener("click", () => {
         isLeftPanelOpen = !isLeftPanelOpen;
-        leftPanel.style.left = isLeftPanelOpen ? "0" : "-110%";
+        leftPanel.style.left = isLeftPanelOpen ? "0" : "-120%";
         hamburgerIcon.src = isLeftPanelOpen
-            ? "svgs/hamburger-close.svg"
-            : "svgs/hamburger-open.svg";
+            ? "svgs/hamburger-open.svg"
+            : "svgs/hamburger-close.svg";
     });
 };
 

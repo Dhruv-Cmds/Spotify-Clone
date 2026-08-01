@@ -771,7 +771,7 @@ nav button:nth-child(2):hover {
         gap: 10px;
         flex-wrap: wrap;
         overflow-y: auto;
-        max-height: 70vh;
+        max-height: 60vh;
     }
 
     .card {
@@ -807,8 +807,41 @@ nav button:nth-child(2):hover {
 
 /* Small Phones */
 @media (max-width: 480px) {
+
     .left {
-        width: 355px;
+        width: 385px;
+    }
+
+    .right {
+        width: 100vw;
+    }
+
+    .right-text{
+        display: flex;
+        justify-content: center;
+    }
+
+    .playbar {
+        width: 83%;
+        gap: 50px;
+    }
+
+    .seekbar {
+        right: 15px;
+        width: 90% !important;
+        top: 57px !important;
+    }
+    
+
+    .song-time {
+        margin-right: 60px;
+    }
+
+    .song-buttons {
+        margin-right: -33px;
+        margin-left: 30px;
+        display: flex;
+        gap: 0px;
     }
 }
 
@@ -825,6 +858,15 @@ nav button:nth-child(2):hover {
         width: 370px;
     }
 
+    .right {
+        width: 100vw;
+    }
+
+    .right-text {
+        display: flex;
+        justify-content: center;
+    }
+
     .playbar {
         width: 85%;
     }
@@ -833,6 +875,10 @@ nav button:nth-child(2):hover {
         right: 12px;
         width: 64% !important;
         top: 50px !important;
+    }
+
+    .card-container {
+        max-height: 70vh;
     }
 
 }

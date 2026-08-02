@@ -39,17 +39,15 @@ function secondsToMinutesSeconds(seconds) {
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-// local
-// const songsBaseURL = "http://127.0.0.1:3000/songs/";
+const songsBaseURL = new URL("songs/", document.baseURI).href;
 
-// vps
-const songsBaseURL = "/songs/";
 const playlistSongs = {};
 
 // Fetch music from one playlist folder.
 async function getSongs(playlist) {
 
-    let a = await fetch(`${songsBaseURL}${playlist}/`);
+    const playlistURL = new URL(`${playlist}/`, songsBaseURL);
+    let a = await fetch(playlistURL);
     let response = await a.text();
 
     let div = document.createElement("div");
@@ -60,8 +58,10 @@ async function getSongs(playlist) {
     for (let i = 0; i < as.length; i++) {
         const element = as[i];
 
-        if (element.href.endsWith(".mp3")) {
-            songs.push(element.href);
+        const songURL = new URL(element.getAttribute("href"), playlistURL).href;
+
+        if (new URL(songURL).pathname.toLowerCase().endsWith(".mp3")) {
+            songs.push(songURL);
         };
     };
     return songs;
@@ -78,15 +78,7 @@ main function execute then this function will execute and play song */
 
 const playMusic = (track, pause = false) => {
 
-    // local
-    // const songURL = track.startsWith("http")
-    //     ? track
-    //     : `http://127.0.0.1:3000/songs/${encodeURIComponent(track)}`;
-
-    // vps
-    const songURL = track.startsWith("http")
-        ? track
-        : `/songs/${encodeURIComponent(track)}`;
+    const songURL = new URL(track, songsBaseURL).href;
 
 
     const songName = decodeURIComponent(
@@ -96,7 +88,9 @@ const playMusic = (track, pause = false) => {
     currentSong.src = songURL;
 
     if (!pause) {
-        currentSong.play();
+        currentSong.play().catch(error => {
+            console.error("Could not play this song:", error);
+        });
         play.src = "svgs/pause.svg";
     } else {
         play.src = "svgs/play.svg";

@@ -840,7 +840,7 @@ nav button:nth-child(2):hover {
     .seekbar {
         right: 15px;
         width: 90% !important;
-        top: 57px !important;
+        top: 50px !important;
     }
 
 
@@ -892,9 +892,9 @@ nav button:nth-child(2):hover {
     }
 
     .seekbar {
-        right: 12px;
+        right: 55px;
         width: 64% !important;
-        top: 50px !important;
+        top: 45px !important;
     }
 
     .card-container {

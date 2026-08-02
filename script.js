@@ -39,10 +39,13 @@ function secondsToMinutesSeconds(seconds) {
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-// feacting musics from folders
-async function getSongs() {
+const songsBaseURL = "http://127.0.0.1:3000/songs/";
+const playlistSongs = {};
 
-    let a = await fetch("http://127.0.0.1:3000/songs/");
+// Fetch music from one playlist folder.
+async function getSongs(playlist) {
+
+    let a = await fetch(`${songsBaseURL}${playlist}/`);
     let response = await a.text();
 
     let div = document.createElement("div");
@@ -59,6 +62,10 @@ async function getSongs() {
     };
     return songs;
 };
+
+function getSongName(song) {
+    return decodeURIComponent(new URL(song).pathname.split("/").pop());
+}
 
 const currentSong = new Audio;
 
@@ -81,6 +88,8 @@ const playMusic = (track, pause = false) => {
     if (!pause) {
         currentSong.play();
         play.src = "svgs/pause.svg";
+    } else {
+        play.src = "svgs/play.svg";
     };
 
     document.querySelector(".song-info").innerHTML = songName;
@@ -89,45 +98,53 @@ const playMusic = (track, pause = false) => {
 
 async function main() {
 
-    // Get the list of all the songs
-    let songs = await getSongs();
+    let songs = [];
     let currentSongIndex = 0;
 
-    playMusic(songs[0], true);
-    // SHow all the songs in the playlist
     let songUL = document.querySelector(".songs-list").getElementsByTagName("ul")[0];
 
-    songUL.innerHTML = "";
+    async function selectPlaylist(playlist) {
+        if (!playlistSongs[playlist]) {
+            playlistSongs[playlist] = await getSongs(playlist);
+        }
 
-    for (const song of songs) {
-        songUL.innerHTML = songUL.innerHTML + `<li><img width="34" src="svgs/music.svg" alt="">
-                            <div class="info">
-                                <div> ${decodeURIComponent(song.split("/songs/")[1])}</div>
-                                <div>Credit goes to respective owners</div>
-                            </div>
-                            <div class="playnow">
-                                <span>Play Now</span>
-                                <img class="invert" src="svgs/play.svg" alt="">
-                            </div> </li>`;
-    };
+        songs = playlistSongs[playlist];
+        currentSongIndex = 0;
+        songUL.innerHTML = "";
 
-    // Attach an event listener to each song
+        for (const song of songs) {
+            songUL.innerHTML += `<li><img width="34" src="svgs/music.svg" alt="">
+                                <div class="info">
+                                    <div>${getSongName(song)}</div>
+                                    <div>Credit goes to respective owners</div>
+                                </div>
+                                <div class="playnow">
+                                    <span>Play Now</span>
+                                    <img class="invert" src="svgs/play.svg" alt="">
+                                </div></li>`;
+        }
 
-    Array.from(document.querySelector(".songs-list").getElementsByTagName("li")).forEach(e => {
-
-        e.addEventListener("click", () => {
-            const selectedSong = e.querySelector(".info").firstElementChild.innerHTML.trim();
-            const selectedIndex = songs.findIndex(song =>
-                decodeURIComponent(song.split("/songs/")[1]) === selectedSong
-            );
-
-            if (selectedIndex !== -1) {
-                currentSongIndex = selectedIndex;
+        Array.from(songUL.getElementsByTagName("li")).forEach((songItem, index) => {
+            songItem.addEventListener("click", () => {
+                currentSongIndex = index;
                 playMusic(songs[currentSongIndex]);
-            }
+            });
         });
 
+        if (songs.length) {
+            playMusic(songs[0], true);
+        }
+
+        songsTab.click();
+    }
+
+    document.querySelectorAll(".card[data-playlist]").forEach(card => {
+        card.addEventListener("click", () => {
+            selectPlaylist(card.dataset.playlist);
+        });
     });
+
+    await selectPlaylist("english");
 
     // Attack an event listenr to paly
 
@@ -176,7 +193,9 @@ async function main() {
         document.querySelector(".song-time").innerHTML = `
         ${secondsToMinutesSeconds(currentSong.currentTime)}/
         ${secondsToMinutesSeconds(currentSong.duration)}`
-        document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
+        if (currentSong.duration) {
+            document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
+        }
     });
 
     //  Add an event listner to seekbar

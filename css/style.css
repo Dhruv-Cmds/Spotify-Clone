@@ -750,9 +750,7 @@ nav button:nth-child(2):hover {
         font-size: 30px;
     }
 
-    .card-container {
-        justify-content: center;
-    }
+
 
     .card {
         width: 235px;
@@ -767,7 +765,7 @@ nav button:nth-child(2):hover {
     }
 
     .card-container {
-        margin: 30px;
+        margin: 0px;
         gap: 10px;
         flex-wrap: wrap;
         overflow-y: auto;
@@ -776,12 +774,25 @@ nav button:nth-child(2):hover {
 
     .card {
 
-        width: 200px;
+        width: 325px !important;
         color: white;
         padding: 10px;
         transition: 300ms ease-out;
         position: relative;
     }
+
+    .play {
+        top: 330px !important;
+        width: 50px;
+        height: 50px;
+    }
+
+    .play:hover {
+        top: 260px !important;
+        opacity: 1;
+    }
+
+
 }
 
 
@@ -816,7 +827,7 @@ nav button:nth-child(2):hover {
         width: 100vw;
     }
 
-    .right-text{
+    .right-text {
         display: flex;
         justify-content: center;
     }
@@ -831,7 +842,7 @@ nav button:nth-child(2):hover {
         width: 90% !important;
         top: 57px !important;
     }
-    
+
 
     .song-time {
         margin-right: 60px;
@@ -842,6 +853,15 @@ nav button:nth-child(2):hover {
         margin-left: 30px;
         display: flex;
         gap: 0px;
+    }
+
+    .card {
+        width: 265px;
+    }
+
+    .play:hover {
+        top: 240px !important;
+        opacity: 1;
     }
 }
 
@@ -879,6 +899,22 @@ nav button:nth-child(2):hover {
 
     .card-container {
         max-height: 70vh;
+        margin: 0;
     }
 
+    .card {
+        width: 287px !important;
+    }
+
+
+    .play {
+        top: 300px !important;
+        width: 50px;
+        height: 50px;
+    }
+
+    .play:hover {
+        top: 210px !important;
+        opacity: 1;
+    }
 }

@@ -82,7 +82,7 @@ const playMusic = (track, pause = false) => {
         currentSong.play();
         play.src = "svgs/pause.svg";
     };
-    
+
     document.querySelector(".song-info").innerHTML = songName;
     document.querySelector(".song-time").innerHTML = "00:00 / 00:00";
 }
@@ -91,6 +91,7 @@ async function main() {
 
     // Get the list of all the songs
     let songs = await getSongs();
+    let currentSongIndex = 0;
 
     playMusic(songs[0], true);
     // SHow all the songs in the playlist
@@ -114,13 +115,21 @@ async function main() {
 
     Array.from(document.querySelector(".songs-list").getElementsByTagName("li")).forEach(e => {
 
-        e.addEventListener("click", element => {
-            playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
+        e.addEventListener("click", () => {
+            const selectedSong = e.querySelector(".info").firstElementChild.innerHTML.trim();
+            const selectedIndex = songs.findIndex(song =>
+                decodeURIComponent(song.split("/songs/")[1]) === selectedSong
+            );
+
+            if (selectedIndex !== -1) {
+                currentSongIndex = selectedIndex;
+                playMusic(songs[currentSongIndex]);
+            }
         });
 
     });
 
-    // Attack an event listenr to paly, next previois
+    // Attack an event listenr to paly
 
     play.addEventListener("click", () => {
 
@@ -134,6 +143,31 @@ async function main() {
             play.src = "svgs/play.svg"
         }
 
+    });
+
+    // Add an event listener to previous
+    previous.addEventListener("click", () => {
+        if (currentSongIndex > 0) {
+            currentSongIndex -= 1;
+            playMusic(songs[currentSongIndex]);
+        }
+    });
+
+    // Add an event listener to next
+    next.addEventListener("click", () => {
+        if (currentSongIndex < songs.length - 1) {
+            currentSongIndex += 1;
+            playMusic(songs[currentSongIndex]);
+        }
+    });
+
+    currentSong.addEventListener("ended", () => {
+        if (currentSongIndex < songs.length - 1) {
+            currentSongIndex += 1;
+            playMusic(songs[currentSongIndex]);
+        } else {
+            play.src = "svgs/play.svg";
+        }
     });
 
     // Listen for timeupdate event

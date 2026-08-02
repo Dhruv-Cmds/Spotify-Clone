@@ -39,7 +39,11 @@ function secondsToMinutesSeconds(seconds) {
     return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-const songsBaseURL = "http://127.0.0.1:3000/songs/";
+// local
+// const songsBaseURL = "http://127.0.0.1:3000/songs/";
+
+// vps
+const songsBaseURL = "/songs/";
 const playlistSongs = {};
 
 // Fetch music from one playlist folder.
@@ -74,9 +78,15 @@ main function execute then this function will execute and play song */
 
 const playMusic = (track, pause = false) => {
 
+    // local
+    // const songURL = track.startsWith("http")
+    //     ? track
+    //     : `http://127.0.0.1:3000/songs/${encodeURIComponent(track)}`;
+
+    // vps
     const songURL = track.startsWith("http")
         ? track
-        : `http://127.0.0.1:3000/songs/${encodeURIComponent(track)}`;
+        : `/songs/${encodeURIComponent(track)}`;
 
 
     const songName = decodeURIComponent(
